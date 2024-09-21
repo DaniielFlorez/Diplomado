@@ -31,7 +31,7 @@ async function generarLlaves() {
         const llavePublicaBase64 = arrayBufferToBase64(llavePublica);
 
         // Imprimir la llave privada en el textarea
-        document.getElementById("llave").value = llavePrivadaBase64;
+        document.getElementById("llave").value =llavePrivadaBase64;
 
         console.log(`Llave pública para ${nombreUsuario}:`, llavePublicaBase64);
         console.log(`Llave privada para ${nombreUsuario}:`, llavePrivadaBase64);
@@ -64,6 +64,8 @@ function descargarArchivo() {
     URL.revokeObjectURL(url);
 }
 
+
+// hola
 // Función para convertir un ArrayBuffer a Base64
 function arrayBufferToBase64(buffer) {
     let binary = '';
@@ -74,3 +76,4 @@ function arrayBufferToBase64(buffer) {
     }
     return window.btoa(binary);
 }
+
