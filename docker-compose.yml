@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  persistencia:
+    image: mariadb
+    container_name: persistencia
+    environment:
+      - MARIADB_ROOT_PASSWORD=persistencia-12345
+      - MARIADB_DATABASE=persistencia
+      - MARIADB_USER=diplomado
+      - MARIADB_PASSWORD=diplomado123
+    volumes:
+      # Preload files
+      - ./sql:/docker-entrypoint-initdb.d:z
