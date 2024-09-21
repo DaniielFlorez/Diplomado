@@ -11,3 +11,4 @@ services:
     volumes:
       # Preload files
       - ./sql:/docker-entrypoint-initdb.d:z
+      
