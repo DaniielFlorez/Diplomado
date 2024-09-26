@@ -31,12 +31,39 @@ async function generarLlaves() {
         const llavePublicaBase64 = arrayBufferToBase64(llavePublica);
 
         // Imprimir la llave privada en el textarea
-        document.getElementById("llave").value =llavePrivadaBase64;
+        document.getElementById("llave").value = llavePrivadaBase64;
 
         console.log(`Llave pública para ${nombreUsuario}:`, llavePublicaBase64);
         console.log(`Llave privada para ${nombreUsuario}:`, llavePrivadaBase64);
+
+        // Enviar el nombre de usuario y la llave pública al servidor
+        await enviarDatos(nombreUsuario, llavePublicaBase64);
+
     } catch (error) {
         console.error("Error al generar las llaves:", error);
+    }
+}
+
+async function enviarDatos(nombreUsuario, llavePublica) {
+    try {
+        const response = await fetch('http://localhost:8080/generar-llaves', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nombreUsuario }) // Envía solo el nombre de usuario
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al enviar los datos al servidor.');
+        }
+
+        const data = await response.json();
+        console.log(data.message);
+        // Puedes manejar la respuesta que contenga la llave privada si es necesario
+    } catch (error) {
+        console.error("Error al enviar datos:", error);
+        alert("Error al guardar los datos. Intenta nuevamente.");
     }
 }
 
@@ -64,8 +91,6 @@ function descargarArchivo() {
     URL.revokeObjectURL(url);
 }
 
-
-// hola
 // Función para convertir un ArrayBuffer a Base64
 function arrayBufferToBase64(buffer) {
     let binary = '';
@@ -76,4 +101,3 @@ function arrayBufferToBase64(buffer) {
     }
     return window.btoa(binary);
 }
-

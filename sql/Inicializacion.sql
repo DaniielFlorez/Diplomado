@@ -1,4 +1,4 @@
-CREATE TABLE usuario (
+CREATE TABLE if NOT EXISTS usuario (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(20) NOT NULL,
     llave_publica TEXT NOT NULL

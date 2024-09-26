@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  persistencia:
+    image: mariadb
+    container_name: persistencia
+    environment:
+      - MARIADB_ROOT_PASSWORD=persistencia-12345
+      - MARIADB_DATABASE=persistencia
+      - MARIADB_USER=diplomado
+      - MARIADB_PASSWORD=diplomado123
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d:z
+    ports:
+      - "3306:3306"
+    networks:
+      - webapp-network
+
+  web-rsa-key-generator:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    ports:
+      - "8080:3000"
+    volumes:
+      - .:/usr/src/app
+    environment:
+      DB_HOST: persistencia
+      DB_USER: diplomado
+      DB_PASSWORD: diplomado123
+      DB_NAME: persistencia
+    depends_on:
+      - persistencia
+    networks:
+      - webapp-network
+
+networks:
+  webapp-network:
+    driver: bridge
