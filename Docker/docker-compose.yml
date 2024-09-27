@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   persistencia:
     image: mariadb
@@ -30,6 +29,17 @@ services:
       DB_NAME: persistencia
     depends_on:
       - persistencia
+    networks:
+      - webapp-network
+
+  # Servicio nginx para servir el HTML
+  web-server:
+    image: nginx
+    container_name: web-server
+    ports:
+      - "80:80"  # Mapea el puerto 80 del contenedor al puerto 80 del host
+    volumes:
+      - ./Web:/usr/share/nginx/html:ro  # Monta la carpeta Web donde está index.html
     networks:
       - webapp-network
 
