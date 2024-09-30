@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  persistencia:
+    image: mariadb
+    container_name: persistencia
+    environment:
+      - MARIADB_ROOT_PASSWORD=persistencia-12345
+      - MARIADB_DATABASE=persistencia
+      - MARIADB_USER=usuario
+      - MARIADB_PASSWORD=usuario-12345
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d:z
+    ports:
+      - "3306:3306" #Mapea el puerto de la conexión de la bases de datos
+
+  web-server:
+    image: nginx
+    container_name: web-server
+    ports:
+      - "80:80"  # Mapea el puerto 80 del contenedor al puerto 80 del host
+    volumes:
+      - ./app/templates:/usr/share/nginx/html:ro  # Carpeta donde está index.html
+      - ./app/nginx.conf:/etc/nginx/conf.d/default.conf  # Configuración de Nginx
+    depends_on:
+      - web-app
+    networks:
+      - webapp-network
+
+  web-app:
+    build:
+      context: ./app  # El directorio donde está tu Flask
+    container_name: flask_app
+    environment:
+      - FLASK_ENV=development
+    ports:
+      - "5000:5000"  # Mapea el puerto 5000 para Flask
+    volumes:
+      - ./app:/app
+    networks:
+      - webapp-network
+
+networks:
+  webapp-network:

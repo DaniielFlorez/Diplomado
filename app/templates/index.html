@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Generador de Llaves</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Generador de Llaves</h1>
+        <form id="keyForm">
+            <label for="username">Nombre de usuario:</label>
+            <input type="text" id="username" name="username" required>
+            <button type="submit" onclick="generateKeys()">Generar llaves</button>
+        </form>
+
+        <h2>Llave privada</h2>
+        <textarea id="privateKey" readonly></textarea>
+        <button id="downloadButton" onclick="downloadPrivateKey()">Descargar llave privada</button>
+    </div>
+
+    <script>
+        // Función para generar las llaves
+        function generateKeys() {
+            const formData = new FormData(document.getElementById('keyForm'));
+
+            fetch('/generate', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Mostrar la llave privada en el textarea
+                    document.getElementById('privateKey').value = data.private_key;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Función para descargar la llave privada como un archivo de texto
+        function downloadPrivateKey() {
+            const privateKey = document.getElementById('privateKey').value;
+            const blob = new Blob([privateKey], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'llave_privada.txt';
+            link.click();
+        }
+
+        // Añadir el evento al formulario
+        document.getElementById('keyForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Evita que se recargue la página
+            generateKeys(); // Llama a la función para generar llaves
+        });
+    </script>
+
+</body>
+
+</html>
