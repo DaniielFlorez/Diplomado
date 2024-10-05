@@ -1,25 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>Generador de Llaves</title>
 </head>
-
 <body>
     <div class="container">
         <h1>Generador de Llaves</h1>
         <form id="keyForm">
             <label for="username">Nombre de usuario:</label>
             <input type="text" id="username" name="username" required>
-            <button type="submit" onclick="generateKeys()">Generar llaves</button>
+            <button type="submit">Generar llaves</button>
         </form>
 
         <h2>Llave privada</h2>
         <textarea id="privateKey" readonly></textarea>
         <button id="downloadButton" onclick="downloadPrivateKey()">Descargar llave privada</button>
+        <button onclick="showRegisterForm()">Registrarse</button> <!-- Botón para ir a registro -->
+        <button onclick="showLoginForm()">Iniciar sesión</button> <!-- Botón para ir a login -->
+
+        <!-- Formulario de registro -->
+        <div id="registerFormContainer" style="display:none;">
+            <h2>Registro de Usuario</h2>
+            <form id="registerForm" method="POST" action="/register">
+                <label for="registerUsername">Nombre de usuario:</label>
+                <input type="text" id="registerUsername" name="username" required>
+
+                <label for="registerEmail">Correo electrónico:</label>
+                <input type="email" id="registerEmail" name="email" required>
+
+                <label for="registerPassword">Contraseña:</label>
+                <input type="password" id="registerPassword" name="password" required>
+
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+        
+        <!-- Formulario de inicio de sesión -->
+        <div id="loginFormContainer" style="display:none;">
+            <h2>Inicio de Sesión</h2>
+            <form id="loginForm" method="POST" action="/login">
+                <label for="loginUsername">Nombre de usuario:</label>
+                <input type="text" id="loginUsername" name="username" required>
+
+                <label for="loginPassword">Contraseña:</label>
+                <input type="password" id="loginPassword" name="password" required>
+
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+        </div>
     </div>
 
     <script>
@@ -49,13 +80,23 @@
             link.click();
         }
 
-        // Añadir el evento al formulario
+        // Añadir el evento al formulario de generación de llaves
         document.getElementById('keyForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Evita que se recargue la página
             generateKeys(); // Llama a la función para generar llaves
         });
+
+        // Mostrar el formulario de registro
+        function showRegisterForm() {
+            document.getElementById('registerFormContainer').style.display = 'block';
+            document.getElementById('loginFormContainer').style.display = 'none'; // Ocultar el formulario de inicio de sesión
+        }
+
+        // Mostrar el formulario de inicio de sesión
+        function showLoginForm() {
+            document.getElementById('loginFormContainer').style.display = 'block';
+            document.getElementById('registerFormContainer').style.display = 'none'; // Ocultar el formulario de registro
+        }
     </script>
-
 </body>
-
 </html>

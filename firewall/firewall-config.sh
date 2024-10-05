@@ -12,3 +12,6 @@ iptables -A INPUT -j DROP
 
 # Permitir tráfico de la red interna de Docker
 iptables -A INPUT -i lo -j ACCEPT
+
+#Mantener el contenedor en ejecución
+sleep infinity

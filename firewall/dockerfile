@@ -1,4 +1,4 @@
-FROM debian
+FROM debian:latest
 
 # Instalar iptables
 RUN apt-get update && apt-get install -y iptables
@@ -10,4 +10,5 @@ COPY firewall-config.sh /usr/local/bin/firewall-config.sh
 RUN chmod +x /usr/local/bin/firewall-config.sh
 
 # Ejecutar el script cuando el contenedor se inicie
-CMD ["/usr/local/bin/firewall-config.sh"]
+CMD ["/usr/local/bin/firewall-config.sh","python", "app.py"]
+
