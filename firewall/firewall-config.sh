@@ -7,11 +7,14 @@ iptables -F
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 iptables -A INPUT -p tcp --dport 5000 -j ACCEPT
 
-# Bloquear cualquier otro tráfico no autorizado
-iptables -A INPUT -j DROP
-
 # Permitir tráfico de la red interna de Docker
 iptables -A INPUT -i lo -j ACCEPT
 
-#Mantener el contenedor en ejecución
+# Registrar cualquier otro tráfico no autorizado
+iptables -A INPUT -j LOG --log-prefix "IPTables-Rejected: " --log-level 4
+
+# Bloquear cualquier otro tráfico no autorizado
+iptables -A INPUT -j DROP
+
+# Mantener el contenedor en ejecución
 sleep infinity

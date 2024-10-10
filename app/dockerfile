@@ -1,18 +1,30 @@
 # Usar una imagen base de Python
-FROM python:3.9-slim
+FROM python:3.10-slim
+
+# Instalar las herramientas de compilación necesarias
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    default-libmysqlclient-dev \
+    pkg-config \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Establecer el directorio de trabajo
 WORKDIR /app
 
 # Copiar el archivo requirements.txt y luego instalar las dependencias
-COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+COPY requirements.txt ./ 
+RUN pip install --no-cache-dir -r requirements.txt  # Usar --no-cache-dir para reducir el tamaño de la imagen
 
 # Copiar el código de la aplicación
-COPY . .
+COPY . ./ 
 
 # Exponer el puerto 5000 para Flask
-EXPOSE 5000
+EXPOSE 5000 
+
+# Establecer la variable de entorno FLASK_APP
+ENV FLASK_APP=app.py  
 
 # Ejecutar la aplicación Flask
 CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]

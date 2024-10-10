@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Principal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Color de fondo suave */
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            max-width: 400px; /* Tamaño de la ventana */
+            margin: 50px auto; /* Centrar la ventana */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff; /* Fondo blanco para la ventana */
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            text-align: center;
+            color: #555;
+        }
+        .btn {
+            width: 100%;
+            border-radius: 30px;
+            padding: 10px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            margin-bottom: 15px; /* Espacio entre los botones */
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        .flash-messages {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Menú Principal</h1>
+        <p>Selecciona una opción:</p>
+
+        <!-- Menú de navegación -->
+        <div class="text-center mb-4">
+            <a href="{{ url_for('key_generation') }}" class="btn btn-primary">Generar Llaves</a>
+            <a href="{{ url_for('file_signature') }}" class="btn btn-secondary">Archivos</a>
+            <form method="POST" action="{{ url_for('logout') }}" class="d-inline">
+                <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+            </form>
+        </div>
+
+        <!-- Mensajes flash para retroalimentación -->
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="list-unstyled">
+                        {% for message in messages %}
+                            <li class="alert alert-info">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

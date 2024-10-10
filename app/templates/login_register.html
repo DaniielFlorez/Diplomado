@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
@@ -27,18 +27,19 @@
         .btn {
             width: 100%;
             border-radius: 30px;
-            padding: 10px;
+            padding: 15px; /* Aumentar el padding */
             transition: all 0.3s ease;
-            font-size: 16px;
+            font-size: 18px; /* Aumentar tamaño de fuente */
         }
         .btn-primary {
             background-color: #007bff;
             color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
         }
         .btn-primary:hover {
             background-color: #0056b3;
             transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra más intensa en hover */
         }
         .flash-messages {
             margin-top: 20px;
@@ -48,41 +49,28 @@
             text-align: center;
             margin-top: 20px;
         }
-        .go-back a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .go-back a:hover {
-            text-decoration: underline;
-        }
-        .btn-back {
-            margin-top: 10px; /* Espacio entre el botón de regreso y el resto */
+        .form-group {
+            margin-bottom: 20px; /* Espacio entre los campos del formulario */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Registro de Usuario</h2>
+        <h2>Iniciar Sesión</h2>
         
-        <!-- Formulario de registro -->
-        <form method="POST" action="{{ url_for('register') }}">
+        <!-- Formulario de inicio de sesión -->
+        <form method="POST" action="{{ url_for('login') }}">
             <div class="form-group">
                 <label for="username">Nombre de usuario:</label>
                 <input type="text" name="username" id="username" class="form-control" placeholder="Ingresa tu nombre de usuario" required>
             </div>
 
             <div class="form-group">
-                <label for="email">Correo electrónico:</label>
-                <input type="email" name="email" id="email" class="form-control" placeholder="Ingresa tu correo electrónico" required>
-            </div>
-
-            <div class="form-group">
                 <label for="password">Contraseña:</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="Ingresa una contraseña segura" required>
+                <input type="password" name="password" id="password" class="form-control" placeholder="Ingresa tu contraseña" required>
             </div>
 
-            <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Registrar</button> <!-- Agregado margen superior -->
+            <button type="submit" class="btn btn-primary" aria-label="Iniciar sesión">Iniciar Sesión</button>
         </form>
 
         <!-- Mensajes flash para retroalimentación -->
@@ -97,12 +85,11 @@
                 </div>
             {% endif %}
         {% endwith %}
+    </div>
 
-        <!-- Botones para regresar a la página de inicio de sesión y volver -->
-        <div class="go-back">
-            <a href="{{ url_for('login') }}">Volver al inicio de sesión</a>
-            <button class="btn btn-secondary btn-back" onclick="window.location.href='{{ url_for('index') }}'">Atrás</button>
-        </div>
+    <!-- Botón para ir al registro -->
+    <div class="go-back">
+        <a href="{{ url_for('register') }}">No tienes cuenta? Regístrate aquí</a>
     </div>
 
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Llaves</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Color de fondo suave */
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            max-width: 500px; /* Tamaño de la ventana */
+            margin: 50px auto; /* Centrar la ventana */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff; /* Fondo blanco para la ventana */
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #28a745; /* Color verde para el título de la llave privada */
+        }
+        .btn {
+            width: 100%;
+            border-radius: 30px;
+            padding: 10px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
+        .download-button {
+            display: inline-block;
+            text-align: center;
+            margin: 20px auto;
+            border-radius: 30px;
+            padding: 10px;
+            background-color: #28a745; /* Color verde */
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .download-button:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+        }
+        textarea {
+            width: 100%; /* Ancho completo */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: 'Courier New', Courier, monospace; /* Fuente monoespaciada para llaves */
+        }
+        .flash-messages {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generación de Llaves</h1>
+
+        <!-- Mensajes flash -->
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class="list-unstyled">
+                        {% for message in messages %}
+                            <li class="alert alert-info">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Formulario de generación de llaves -->
+        <form id="keyGenerationForm" method="POST" action="/key_generator">
+            <button type="submit" class="btn btn-primary">Generar Llave</button>
+        </form>
+
+        <!-- Mostrar la llave privada generada -->
+        {% if private_key %}
+            <h2>Llave Privada Generada</h2>
+            <textarea readonly rows="10">{{ private_key }}</textarea>
+            <br>
+            <a href="{{ url_for('download_private_key') }}" class="download-button">Descargar Llave Privada</a>
+        {% endif %}
+
+        <!-- Botón volver -->
+        <div class="logout-container">
+            <form method="POST" action="{{ url_for('atras') }}">
+                <button type="submit" class="btn btn-secondary">Atrás</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

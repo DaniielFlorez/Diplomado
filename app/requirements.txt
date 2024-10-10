@@ -1,4 +1,6 @@
 Flask
+Flask-mysql
+Flask-MySQLdb
 pycryptodome
 mysql-connector-python
 Flask-JWT-Extended

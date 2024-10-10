@@ -3,100 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>Generador de Llaves</title>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #007bff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .img-fluid {
+            max-width: 150px;
+        }
+        .btn {
+            width: 100%;
+            border-radius: 30px;
+            padding: 10px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-primary:hover, .btn-secondary:hover, .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Efecto de sombra en hover */
+        }
+        .flash-messages {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Generador de Llaves</h1>
-        <form id="keyForm">
-            <label for="username">Nombre de usuario:</label>
-            <input type="text" id="username" name="username" required>
-            <button type="submit">Generar llaves</button>
-        </form>
+    <div class="container mt-5">
+        <h1>Bienvenido</h1>
+        <img src="{{ url_for('static', filename='tu_imagen.jpg') }}" alt="Descripción de la imagen" class="img-fluid mx-auto d-block mb-4">
+        <p class="text-center">Selecciona una opción:</p>
 
-        <h2>Llave privada</h2>
-        <textarea id="privateKey" readonly></textarea>
-        <button id="downloadButton" onclick="downloadPrivateKey()">Descargar llave privada</button>
-        <button onclick="showRegisterForm()">Registrarse</button> <!-- Botón para ir a registro -->
-        <button onclick="showLoginForm()">Iniciar sesión</button> <!-- Botón para ir a login -->
+        <div class="text-center mb-4">
+            <button onclick="showRegisterForm()" class="btn btn-primary mx-2">Registrarse</button>
+            <button onclick="showLoginForm()" class="btn btn-secondary mx-2">Iniciar sesión</button>
+        </div>
 
         <!-- Formulario de registro -->
-        <div id="registerFormContainer" style="display:none;">
-            <h2>Registro de Usuario</h2>
-            <form id="registerForm" method="POST" action="/register">
-                <label for="registerUsername">Nombre de usuario:</label>
-                <input type="text" id="registerUsername" name="username" required>
-
-                <label for="registerEmail">Correo electrónico:</label>
-                <input type="email" id="registerEmail" name="email" required>
-
-                <label for="registerPassword">Contraseña:</label>
-                <input type="password" id="registerPassword" name="password" required>
-
-                <button type="submit">Registrar</button>
-            </form>
+        <div id="registerFormContainer" class="form-container" style="display:none;">
+            <div class="card">
+                <h2 class="text-center">Registro de Usuario</h2>
+                <form id="registerForm" method="POST" action="{{ url_for('register') }}">
+                    <div class="form-group">
+                        <label for="registerUsername">Nombre de usuario:</label>
+                        <input type="text" id="registerUsername" name="username" class="form-control" placeholder="Ingresa tu nombre de usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Correo electrónico:</label>
+                        <input type="email" id="registerEmail" name="email" class="form-control" placeholder="Ingresa tu correo electrónico" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Contraseña:</label>
+                        <input type="password" id="registerPassword" name="password" class="form-control" placeholder="Ingresa una contraseña segura" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Registrar</button>
+                </form>
+            </div>
         </div>
         
         <!-- Formulario de inicio de sesión -->
-        <div id="loginFormContainer" style="display:none;">
-            <h2>Inicio de Sesión</h2>
-            <form id="loginForm" method="POST" action="/login">
-                <label for="loginUsername">Nombre de usuario:</label>
-                <input type="text" id="loginUsername" name="username" required>
-
-                <label for="loginPassword">Contraseña:</label>
-                <input type="password" id="loginPassword" name="password" required>
-
-                <button type="submit">Iniciar Sesión</button>
-            </form>
+        <div id="loginFormContainer" class="form-container" style="display:none;">
+            <div class="card">
+                <h2 class="text-center">Inicio de Sesión</h2>
+                <form id="loginForm" method="POST" action="{{ url_for('login') }}">
+                    <div class="form-group">
+                        <label for="loginUsername">Nombre de usuario:</label>
+                        <input type="text" id="loginUsername" name="username" class="form-control" placeholder="Ingresa tu nombre de usuario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Contraseña:</label>
+                        <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Ingresa tu contraseña" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-block">Iniciar Sesión</button>
+                </form>
+            </div>
         </div>
+
+        <!-- Mensajes flash para retroalimentación -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    <ul class="list-unstyled">
+                        {% for message in messages %}
+                            <li class="alert alert-info">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
     </div>
 
     <script>
-        // Función para generar las llaves
-        function generateKeys() {
-            const formData = new FormData(document.getElementById('keyForm'));
-
-            fetch('/generate', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    // Mostrar la llave privada en el textarea
-                    document.getElementById('privateKey').value = data.private_key;
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // Función para descargar la llave privada como un archivo de texto
-        function downloadPrivateKey() {
-            const privateKey = document.getElementById('privateKey').value;
-            const blob = new Blob([privateKey], { type: 'text/plain' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'llave_privada.txt';
-            link.click();
-        }
-
-        // Añadir el evento al formulario de generación de llaves
-        document.getElementById('keyForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Evita que se recargue la página
-            generateKeys(); // Llama a la función para generar llaves
-        });
-
-        // Mostrar el formulario de registro
         function showRegisterForm() {
             document.getElementById('registerFormContainer').style.display = 'block';
-            document.getElementById('loginFormContainer').style.display = 'none'; // Ocultar el formulario de inicio de sesión
+            document.getElementById('loginFormContainer').style.display = 'none';
         }
 
-        // Mostrar el formulario de inicio de sesión
         function showLoginForm() {
             document.getElementById('loginFormContainer').style.display = 'block';
-            document.getElementById('registerFormContainer').style.display = 'none'; // Ocultar el formulario de registro
+            document.getElementById('registerFormContainer').style.display = 'none';
         }
     </script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
